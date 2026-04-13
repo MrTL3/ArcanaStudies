@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arcana Studies ✦</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<!-- ══ SCENE BACKGROUND ══ -->
+<div id="scene" class="scene-day">
+  <div id="stars"><svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"></svg></div>
+  <canvas id="rain-overlay"></canvas>
+</div>
+
+<!-- ══ APP GRID ══ -->
+<div id="app">
+
+  <!-- TOP BAR -->
+  <div id="topbar" class="panel">
+
+    <!-- LEFT: Logo con emblema -->
+    <div id="logo">
+      <div id="logo-emblem">✦</div>
+      <div id="logo-text">
+        <span id="logo-main"><span class="logo-arc">Arcana</span> Studies</span>
+      </div>
+    </div>
+
+    <!-- CENTER: Reloj con ornamentos -->
+    <div id="top-center">
+      <div id="clock-wrap">
+        <div class="clock-ornament">❧</div>
+        <div id="top-center-inner">
+          <div id="clock">00:00</div>
+          <div id="date-display"></div>
+        </div>
+        <div class="clock-ornament" style="transform:scaleX(-1)">❧</div>
+      </div>
+    </div>
+
+    <!-- RIGHT: Frase + botón -->
+    <div id="top-right">
+      <div id="quote-wrap-top">
+        <div id="quote-rule-header"></div>
+        <div id="quote-text-top"></div>
+        <div id="quote-src-top"></div>
+      </div>
+      <button id="fullscreen-btn" onclick="toggleFullscreen()" title="Pantalla completa">⛶</button>
+    </div>
+
+  </div>
+
+  <!-- ══ LEFT PANEL ══ -->
+  <div id="left-panel">
+
+    <!-- Scene + time -->
+    <div class="panel" id="scene-panel">
+      <div class="panel-title">✦ Escenario</div>
+      <div id="scene-buttons">
+        <button class="scene-btn active" data-scene="mountain" onclick="setScene('mountain',this)">
+          <span class="scene-icon">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 16 L7 7 L10 11 L13 5 L18 16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="currentColor" fill-opacity="0.12"/>
+              <path d="M11.5 5.5 L13.5 8.5" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.6"/>
+            </svg>
+          </span>Montaña
+        </button>
+        <button class="scene-btn" data-scene="lake" onclick="setScene('lake',this)">
+          <span class="scene-icon">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 11 Q6 8 10 11 Q14 14 18 11" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+              <path d="M2 14 Q6 11.5 10 14 Q14 16.5 18 14" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" opacity="0.45"/>
+              <circle cx="14.5" cy="5.5" r="2.5" stroke="currentColor" stroke-width="1.3" fill="currentColor" fill-opacity="0.12"/>
+            </svg>
+          </span>Lago
+        </button>
+        <button class="scene-btn" data-scene="meadow" onclick="setScene('meadow',this)">
+          <span class="scene-icon">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M2 16 Q5 11 8 13 Q11 15 14 10 Q17 5 19 8 L19 16Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="currentColor" fill-opacity="0.12"/>
+              <line x1="7" y1="13" x2="7" y2="8" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+              <circle cx="7" cy="7.5" r="1.5" stroke="currentColor" stroke-width="1.2" fill="currentColor" fill-opacity="0.2"/>
+            </svg>
+          </span>Pradera
+        </button>
+        <button class="scene-btn" data-scene="forest" onclick="setScene('forest',this)">
+          <span class="scene-icon">
+            <svg viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M10 2 L5 10 L8 10 L8 16 L12 16 L12 10 L15 10Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" fill="currentColor" fill-opacity="0.12"/>
+              <path d="M5 8 L3 12 L6 12" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity="0.6"/>
+              <path d="M15 8 L17 12 L14 12" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" opacity="0.6"/>
+            </svg>
+          </span>Bosque
+        </button>
+      </div>
+      <div style="margin-top:10px">
+        <div class="panel-title" style="margin-bottom:6px">✦ Ambiente</div>
+        <div class="time-row">
+          <button class="time-btn active" onclick="setTime('day',this)">Día</button>
+          <button class="time-btn"        onclick="setTime('sunset',this)">Ocaso</button>
+          <button class="time-btn"        onclick="setTime('night',this)">Noche</button>
+          <button class="time-btn"        onclick="setTime('rain',this)">Lluvia</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Music -->
+    <div class="panel" id="music-panel">
+      <div class="panel-title">♪ Música</div>
+
+      <!-- Track info -->
+      <div id="yt-track-info">
+        <div id="yt-track-dot"></div>
+        <div id="yt-track-name">Lofi Hip Hop Radio</div>
+      </div>
+
+      <!-- Controls -->
+      <div id="player-controls">
+        <button class="player-btn" id="btn-prev"    onclick="ytSeekBack()"       title="Anterior stream">⏮</button>
+        <button class="player-btn primary" id="btn-play" onclick="ytPlayPause()" title="Reproducir">▶</button>
+        <button class="player-btn" id="btn-next"    onclick="ytSeekForward()"    title="Siguiente stream">⏭</button>
+        <button class="player-btn" id="btn-mute"    onclick="ytToggleMute(this)" title="Silenciar">🔊</button>
+      </div>
+
+      <div id="progress-wrap">
+        <span id="time-current">0:00</span>
+        <div id="progress-bar-bg" onclick="ytSeek(event)"><div id="progress-bar-fill"></div></div>
+        <span id="time-total">0:00</span>
+      </div>
+      <div id="vol-row">
+        <span>♪</span>
+        <input type="range" id="volume" min="0" max="100" value="70"
+               oninput="ytSetVolume(this.value)">
+      </div>
+
+      <!-- Ambient sounds -->
+      <div style="margin-top:10px">
+        <div class="panel-title" style="margin-bottom:6px">☁ Ambiente</div>
+        <div class="ambient-grid">
+          <div class="amb-item"><button class="amb-btn" id="amb-rain"    onclick="toggleAmb(this,'rain')"    title="Lluvia">🌧</button><input type="range" class="amb-vol" id="vol-rain"    min="0" max="100" value="50" oninput="setAmbVol('rain',this.value)"></div>
+          <div class="amb-item"><button class="amb-btn" id="amb-wind"    onclick="toggleAmb(this,'wind')"    title="Viento">🍃</button><input type="range" class="amb-vol" id="vol-wind"    min="0" max="100" value="50" oninput="setAmbVol('wind',this.value)"></div>
+          <div class="amb-item"><button class="amb-btn" id="amb-fire"    onclick="toggleAmb(this,'fire')"    title="Fuego">🕯</button><input type="range" class="amb-vol" id="vol-fire"    min="0" max="100" value="50" oninput="setAmbVol('fire',this.value)"></div>
+          <div class="amb-item"><button class="amb-btn" id="amb-birds"   onclick="toggleAmb(this,'birds')"   title="Pájaros">🐦</button><input type="range" class="amb-vol" id="vol-birds"   min="0" max="100" value="50" oninput="setAmbVol('birds',this.value)"></div>
+          <div class="amb-item"><button class="amb-btn" id="amb-ocean"   onclick="toggleAmb(this,'ocean')"   title="Océano">🌊</button><input type="range" class="amb-vol" id="vol-ocean"   min="0" max="100" value="50" oninput="setAmbVol('ocean',this.value)"></div>
+          <div class="amb-item"><button class="amb-btn" id="amb-thunder" onclick="toggleAmb(this,'thunder')" title="Tormenta">⚡</button><input type="range" class="amb-vol" id="vol-thunder" min="0" max="100" value="50" oninput="setAmbVol('thunder',this.value)"></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ══ CENTER ══ -->
+  <div id="center-panel" class="panel">
+    <div id="scene-view"></div>
+    <div id="center-bottom-row">
+      <button id="ai-chat-btn" onclick="toggleChat()">🔮 Asistente</button>
+      <div id="session-info">✦ Sesión de estudio activa ✦</div>
+      <button id="note-btn" onclick="if(fsActive)addStickyNote()" title="Nueva nota (solo en pantalla completa)">📜</button>
+    </div>
+  </div>
+
+  <!-- ══ RIGHT PANEL ══ -->
+  <div id="right-panel">
+
+    <!-- ── POMODORO (rediseñado) ── -->
+    <div class="panel" id="pomodoro-panel">
+      <div class="panel-title">⧗ Temporizador</div>
+
+      <div class="pomo-mode-tabs">
+        <button class="pomo-mode-tab active" onclick="setPomoType('focus',25,this)">Enfoque</button>
+        <button class="pomo-mode-tab"        onclick="setPomoType('short',5,this)">Descanso</button>
+        <button class="pomo-mode-tab"        onclick="setPomoType('long',15,this)">Pausa larga</button>
+      </div>
+
+      <!-- Ring: only the time inside, no buttons -->
+      <div id="pomo-ring-wrap">
+        <svg id="pomo-svg" viewBox="0 0 120 120">
+          <circle id="pomo-track"    cx="60" cy="60" r="50"/>
+          <circle id="pomo-progress" cx="60" cy="60" r="50"/>
+        </svg>
+        <div id="pomo-time-block">
+          <div id="pomo-time">25:00</div>
+          <div id="pomo-label">ENFOQUE</div>
+        </div>
+      </div>
+
+      <!-- Adjust row: clearly outside and below the ring -->
+      <div class="pomo-adjust-row">
+        <button class="pomo-adj-btn" onclick="adjustPomo(-5)">− 5 min</button>
+        <span class="pomo-adj-sep">·</span>
+        <button class="pomo-adj-btn" onclick="adjustPomo(+5)">+ 5 min</button>
+      </div>
+
+      <button id="pomo-play-btn" onclick="togglePomo()">▶ Iniciar</button>
+
+      <div class="pomo-secondary-row">
+        <button class="pomo-icon-btn" onclick="resetPomo()" title="Reiniciar">↺</button>
+        <div class="pomo-sessions" id="pomo-sessions">
+          <div class="session-dot"></div>
+          <div class="session-dot"></div>
+          <div class="session-dot"></div>
+          <div class="session-dot"></div>
+        </div>
+        <button class="pomo-icon-btn" onclick="skipPomo()" title="Saltar">⇥</button>
+      </div>
+    </div>
+
+    <!-- ── TASKS (sección única con subsecciones) ── -->
+    <div class="panel" id="tasks-panel">
+      <div class="panel-title">✎ Misiones
+        <button id="clear-done-btn" onclick="clearDoneTasks()" title="Limpiar completadas">✕ Limpiar</button>
+      </div>
+
+      <!-- Tab selector for input -->
+      <div class="task-tabs">
+        <button class="task-type-tab active" onclick="setActiveTaskType('main',this)">⚔ Principal</button>
+        <button class="task-type-tab"        onclick="setActiveTaskType('side',this)">📜 Secundaria</button>
+      </div>
+
+      <div id="task-input-row">
+        <input type="text" id="task-input" placeholder="Misión principal..." maxlength="60"
+               onkeydown="if(event.key==='Enter')addTask()">
+        <button id="add-task-btn" onclick="addTask()">+</button>
+      </div>
+
+      <!-- Unified list: JS renders two sections inside here -->
+      <div id="task-list"></div>
+    </div>
+
+  </div>
+
+  <!-- BOTTOM BAR — pergamino con frases motivadoras -->
+  <div id="bottombar" class="panel">
+    <div id="scroll-ornament-left">❧</div>
+    <div id="quote-wrap">
+      <div id="quote-rule-top"></div>
+      <div id="quote">
+        <span id="quote-text"></span>
+        <cite id="quote-src"></cite>
+      </div>
+      <div id="quote-rule-bottom"></div>
+    </div>
+    <div id="scroll-ornament-right">❧</div>
+  </div>
+
+</div>
+
+<div id="notif"></div>
+
+<!-- ══ FULLSCREEN OVERLAY ══ -->
+<div id="fs-overlay">
+
+  <!-- Panels -->
+  <div id="fs-pomo"  class="fs-panel">
+    <button class="fs-hide-btn" onclick="fsPanelToggle('fs-pomo','pomo-ghost','fs-pomo-tab')" title="Ocultar">⊟</button>
+  </div>
+  <div id="fs-tasks" class="fs-panel">
+    <button class="fs-hide-btn" onclick="fsPanelToggle('fs-tasks',null,'fs-tasks-tab')" title="Ocultar">⊟</button>
+  </div>
+  <div id="fs-music" class="fs-panel">
+    <button class="fs-hide-btn" onclick="fsPanelToggle('fs-music',null,'fs-music-tab')" title="Ocultar">⊟</button>
+  </div>
+
+  <!-- Edge restore tabs (hidden by default) -->
+  <button id="fs-pomo-tab"  class="fs-restore-tab" onclick="fsPanelToggle('fs-pomo','pomo-ghost','fs-pomo-tab')">⧗ Pomo</button>
+  <button id="fs-tasks-tab" class="fs-restore-tab" onclick="fsPanelToggle('fs-tasks',null,'fs-tasks-tab')">✎ Misiones</button>
+  <button id="fs-music-tab" class="fs-restore-tab" onclick="fsPanelToggle('fs-music',null,'fs-music-tab')">♪ Música</button>
+
+  <!-- Ghost timer — glass pill with time only -->
+  <div id="pomo-ghost">
+    <div id="pomo-ghost-time-wrap" onclick="fsPanelToggle('fs-pomo','pomo-ghost','fs-pomo-tab')" title="Restaurar panel">
+      <div id="pomo-ghost-time">25:00</div>
+    </div>
+    <div id="pomo-ghost-label">Enfoque</div>
+  </div>
+
+  <!-- (fs-show-btns kept for JS compat but hidden via CSS) -->
+  <div id="fs-show-btns"></div>
+
+  <div id="fs-center">
+    <div id="fs-character-wrap"></div>
+    <div id="fs-bottom-row">
+      <button class="fs-chat-btn" onclick="toggleChat()">🔮 Asistente</button>
+      <div id="fs-session-info"></div>
+      <button class="fs-note-pill" onclick="addStickyNote()" title="Nueva nota">📜 Nota</button>
+    </div>
+  </div>
+  <button id="fs-exit-btn" onclick="toggleFullscreen()">✕ Salir</button>
+  <!-- Notes container (notes appended here) -->
+  <div id="fs-notes"></div>
+</div>
+
+<!-- ══ AI CHAT PANEL (floating) ══ -->
+<div id="ai-chat-panel">
+  <div id="ai-chat-header">
+    <span>✦ Asistente Arcano</span>
+    <button onclick="toggleChat()">✕</button>
+  </div>
+  <div id="ai-chat-messages"></div>
+  <div id="ai-chat-input-row">
+    <input type="text" id="ai-chat-input" placeholder="Escribe tu pregunta..." maxlength="500"
+           onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendChatMsg();}">
+    <button id="ai-chat-send" onclick="sendChatMsg()">↑</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
